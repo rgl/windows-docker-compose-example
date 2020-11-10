@@ -1,4 +1,4 @@
-FROM golang:1.12-windowsservercore-1809 as builder
+FROM golang:1.15-windowsservercore-1809 as builder
 WORKDIR /Users/ContainerUser/hello
 COPY go.* ./
 RUN go mod download
