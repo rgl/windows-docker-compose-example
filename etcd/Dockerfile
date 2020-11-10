@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/windows/nanoserver:1809 as builder
 WORKDIR /Users/ContainerUser/etcd
-ADD https://github.com/etcd-io/etcd/releases/download/v3.3.13/etcd-v3.3.13-windows-amd64.zip ../etcd.zip
+ADD https://github.com/etcd-io/etcd/releases/download/v3.4.13/etcd-v3.4.13-windows-amd64.zip ../etcd.zip
 RUN tar xf ../etcd.zip --strip-components=1 *.exe
 
 FROM mcr.microsoft.com/windows/nanoserver:1809
