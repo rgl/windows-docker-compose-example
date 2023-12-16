@@ -7,10 +7,10 @@ This is an example on how to start a docker-compose environment in a (remote) do
 ## Usage
 
 ```bash
-# set the DOCKER_HOST environment variable.
+# if required, set the DOCKER_HOST environment variable.
 # this make the docker client use this dockerd.
 # NB you must start dockerd with -H tcp://0.0.0.0:2375
-export DOCKER_HOST=tcp://localhost:2375
+#export DOCKER_HOST=tcp://localhost:2375
 
 # create the environment defined in docker-compose.yml
 # and leave it running in the background.
@@ -34,15 +34,18 @@ import os
 import urllib.parse
 import subprocess
 
-docker_host_ip_address = urllib.parse.urlparse(os.environ['DOCKER_HOST']).netloc.split(':')[0]
 p = subprocess.Popen(
     ['docker', 'compose', 'port', 'hello', '8888'],
     text=True,
     stdout=subprocess.PIPE,
     stderr=subprocess.STDOUT)
 stdout, stderr = p.communicate()
-hello_port = stdout.strip().split(':')[-1]
-hello_endpoint = f'http://{docker_host_ip_address}:{hello_port}'
+if 'DOCKER_HOST' in os.environ:
+    docker_host_ip_address = urllib.parse.urlparse(os.environ['DOCKER_HOST']).netloc.split(':')[0]
+    hello_port = stdout.strip().split(':')[-1]
+    hello_endpoint = f'http://{docker_host_ip_address}:{hello_port}'
+else:
+    hello_endpoint = f'http://{stdout.strip()}'
 print(hello_endpoint)
 EOF
 )"
