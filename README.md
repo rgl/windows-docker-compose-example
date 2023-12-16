@@ -1,6 +1,8 @@
 # About
 
-This is an example on how to start a docker-compose environment in a (remote) docker host.
+[![Build](https://github.com/rgl/windows-docker-compose-example/actions/workflows/build.yml/badge.svg)](https://github.com/rgl/windows-docker-compose-example/actions/workflows/build.yml)
+
+This is an example on how to start a docker compose environment in a (remote) docker host.
 
 **NB** This is similar to [rgl/ubuntu-docker-compose-example](https://github.com/rgl/ubuntu-docker-compose-example).
 
