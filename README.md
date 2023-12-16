@@ -14,17 +14,17 @@ export DOCKER_HOST=tcp://localhost:2375
 
 # create the environment defined in docker-compose.yml
 # and leave it running in the background.
-docker-compose up --build -d
+docker compose up --build -d
 
 # show running containers.
-docker-compose ps
+docker compose ps
 
 # execute command inside the containers.
-docker-compose exec -T etcd etcd --version
-docker-compose exec -T etcd etcdctl version
-docker-compose exec -T etcd etcdctl endpoint health
-docker-compose exec -T etcd etcdctl put foo bar
-docker-compose exec -T etcd etcdctl get foo
+docker compose exec -T etcd etcd --version
+docker compose exec -T etcd etcdctl version
+docker compose exec -T etcd etcdctl endpoint health
+docker compose exec -T etcd etcdctl put foo bar
+docker compose exec -T etcd etcdctl get foo
 
 # get the allocated hello port and create an endpoint url based in
 # the DOCKER_HOST environment variable host.
@@ -36,7 +36,7 @@ import subprocess
 
 docker_host_ip_address = urllib.parse.urlparse(os.environ['DOCKER_HOST']).netloc.split(':')[0]
 p = subprocess.Popen(
-    ['docker-compose', 'port', 'hello', '8888'],
+    ['docker', 'compose', 'port', 'hello', '8888'],
     text=True,
     stdout=subprocess.PIPE,
     stderr=subprocess.STDOUT)
@@ -46,12 +46,13 @@ hello_endpoint = f'http://{docker_host_ip_address}:{hello_port}'
 print(hello_endpoint)
 EOF
 )"
+
 # invoke the hello endpoint.
 wget -qO- $hello_endpoint
 
 # show logs.
-docker-compose logs
+docker compose logs
 
 # destroy the environment.
-docker-compose down
+docker compose down
 ```
