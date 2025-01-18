@@ -5,10 +5,16 @@ services:
   hello:
     build: hello
     ports:
+      # NB since this port is declared as a single integer, docker compose will
+      #    automatically allocate a port in the host. to later known the
+      #    allocated port use docker compose port hello 8888
       - "8888"
     depends_on:
       - etcd
     restart: on-failure
+    labels:
+      # NB you can see these container labels with docker inspect.
+      com.example: example
   etcd:
     build: etcd
     restart: on-failure

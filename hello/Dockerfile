@@ -1,4 +1,4 @@
-FROM golang:1.21-nanoserver-ltsc2022 as builder
+FROM golang:1.23-nanoserver-ltsc2022 as builder
 WORKDIR /Users/ContainerUser/hello
 COPY go.* ./
 RUN go mod download
