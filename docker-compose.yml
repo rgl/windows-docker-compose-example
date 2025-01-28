@@ -10,7 +10,8 @@ services:
       #    allocated port use docker compose port hello 8888
       - "8888"
     depends_on:
-      - etcd
+      etcd:
+        condition: service_healthy
     restart: on-failure
     labels:
       # NB you can see these container labels with docker inspect.
@@ -19,6 +20,12 @@ services:
     build: etcd
     command:
       - --data-dir=c:/etcd-data
+    healthcheck:
+      test: ["CMD", "etcdctl", "endpoint", "health", "--dial-timeout=2s", "--command-timeout=3s"]
+      start_period: 5s
+      interval: 15s
+      timeout: 5s
+      retries: 2
     restart: on-failure
     volumes:
       - etcd-data:c:/etcd-data
