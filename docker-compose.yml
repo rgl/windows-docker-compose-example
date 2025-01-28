@@ -17,4 +17,10 @@ services:
       com.example: example
   etcd:
     build: etcd
+    command:
+      - --data-dir=c:/etcd-data
     restart: on-failure
+    volumes:
+      - etcd-data:c:/etcd-data
+volumes:
+  etcd-data:

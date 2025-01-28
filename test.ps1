@@ -33,5 +33,5 @@ try {
 }
 finally {
     docker compose logs
-    docker compose down
+    docker compose down --volumes
 }
