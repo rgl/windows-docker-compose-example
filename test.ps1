@@ -12,7 +12,11 @@ trap {
 
 # wrap the docker command (to make sure this script aborts when it fails).
 function docker {
-    docker.exe @Args | Out-String -Stream -Width ([int]::MaxValue)
+    if ($IsWindows) {
+        docker.exe @Args | Out-String -Stream -Width ([int]::MaxValue)
+    } else {
+        /usr/bin/docker @Args | Out-String -Stream -Width ([int]::MaxValue)
+    }
     if ($LASTEXITCODE) {
         throw "$(@('docker')+$Args | ConvertTo-Json -Compress) failed with exit code $LASTEXITCODE"
     }
@@ -27,11 +31,14 @@ try {
     docker compose exec -T etcd etcdctl put foo bar
     docker compose exec -T etcd etcdctl get foo
     $port = (docker compose port hello 8888) -replace '.+:(\d+)', '$1'
-    $endpoint = "http://localhost:$port"
+    $endpoint = if (Test-Path env:DOCKER_HOST) {
+        "http://$(([uri]$env:DOCKER_HOST).Host):${port}"
+    } else {
+        "http://localhost:${port}"
+    }
     Write-Host "Invoking the hello endpoint at $endpoint..."
     (New-Object System.Net.WebClient).DownloadString($endpoint)
-}
-finally {
+} finally {
     docker compose logs
     docker compose down --volumes
 }
