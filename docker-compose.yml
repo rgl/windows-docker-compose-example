@@ -19,6 +19,7 @@ services:
   etcd:
     build: etcd
     command:
+      - --name=etcd
       - --data-dir=c:/etcd-data
     healthcheck:
       test: ["CMD", "etcdctl", "endpoint", "health", "--dial-timeout=2s", "--command-timeout=3s"]
