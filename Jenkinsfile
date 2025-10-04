@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                powershell './test.ps1'
+                pwsh './test.ps1'
             }
         }
     }
